@@ -34,7 +34,7 @@ Work in `/home/claude`. Load tools first: `ToolSearch` with
 3b. **Card pictures** are not this run's job: the Claude cloud environment can't reach the picture
    sources. After every push, the GitHub Actions workflow `.github/workflows/card-pictures.yml` runs
    `sync/images.py` on GitHub's servers: for each site card with no `SPR` entry it looks the card up on
-   Riftcodex (by the `rid` in `sync/cards.json`), adds the picture to the next free sprite cell, updates
+   Riftcodex (by the `rid` in `sync/cards.json`), or Riot's card gallery page when Riftcodex doesn't have it, adds the picture to the next free sprite cell, updates
    `SPR` in `index.html` and commits "Add card pictures". The workflow fails (GitHub emails the owner)
    if a card still has no picture. Never edit `SPR` or `sprites/` in a sync run.
 4. **Sold copies first** (skip if `deductions` is empty). For every entry in
