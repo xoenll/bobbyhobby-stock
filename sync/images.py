@@ -4,8 +4,9 @@
 Run after sync.py has rewritten index.html. Every card row on the stock site needs a cell in a
 sprite sheet (sprites/sNN.webp, 8 x 3 cells, mapped by `const SPR = {...}` in index.html), or the
 site shows a placeholder. For each row with no SPR entry this script:
-  1. looks the card up in the Riftcodex API by its Riftbound id (cards.json "rid"),
-  2. downloads media.image_url,
+  1. looks the card up by its Riftbound id (cards.json "rid") in the Riftcodex API, or, when
+     Riftcodex doesn't have it (e.g. a new set), in Riot's official card gallery page,
+  2. downloads the card picture,
   3. pastes it into the next free cell (last sheet, or a new sheet when it is full),
   4. adds the id to SPR in index.html.
 A picture placed in --local DIR as <rid>.png/.jpg/.webp (or <site id>.*) is used instead of the
@@ -16,10 +17,12 @@ import argparse, glob, io, json, os, re, ssl, sys, urllib.request
 
 REPO = "/home/claude/bobbyhobby-stock"
 API = "https://api.riftcodex.com/cards/riftbound/"
+GALLERY = "https://playriftbound.com/en-us/card-gallery/"
 COLS, ROWS = 8, 3
 PER = COLS * ROWS
 CA = "/root/.ccr/ca-bundle.crt"
-UA = {"User-Agent": "bobbyhobby-stock-sync/1.0", "Accept": "application/json"}
+UA = {"User-Agent": "Mozilla/5.0 (bobbyhobby-stock-sync)", "Accept": "application/json"}
+_gallery = None
 
 
 def ctx():
@@ -32,7 +35,7 @@ def get(url, accept_json):
         return r.read()
 
 
-def image_url(rid):
+def riftcodex_url(rid):
     data = json.loads(get(API + rid, True))
     items = data if isinstance(data, list) else data.get("items") or data.get("data") or ([data] if "riftbound_id" in data else [])
     exact = [c for c in items if (c.get("riftbound_id") or "").lower() == rid.lower()]
@@ -42,6 +45,49 @@ def image_url(rid):
     if not url:
         raise LookupError("Riftcodex has no image")
     return url
+
+
+def _walk(o):
+    if isinstance(o, dict):
+        yield o
+        for v in o.values():
+            yield from _walk(v)
+    elif isinstance(o, list):
+        for v in o:
+            yield from _walk(v)
+
+
+def gallery_url(rid):
+    """Riot's card gallery embeds every card (id like "rad-133a-167") in its __NEXT_DATA__ JSON."""
+    global _gallery
+    if _gallery is None:
+        h = get(GALLERY, False).decode("utf-8", "replace")
+        m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', h, re.S)
+        if not m:
+            raise LookupError("card gallery has no card data")
+        _gallery = {}
+        for d in _walk(json.loads(m.group(1))):
+            if isinstance(d.get("id"), str) and "publicCode" in d and d["id"] not in _gallery:
+                _gallery[d["id"].lower()] = d
+    card = _gallery.get(rid.lower())
+    if not card:
+        raise LookupError("not in Riftcodex or the card gallery")
+    best, area = None, 0   # the card picture = largest portrait image in the card (icons are 64x64)
+    for d in _walk(card):
+        url, dim = d.get("url"), d.get("dimensions") or {}
+        w, h = dim.get("width") or 0, dim.get("height") or 0
+        if isinstance(url, str) and url.startswith("http") and h > w >= 300 and w * h > area:
+            best, area = url, w * h
+    if not best:
+        raise LookupError("card gallery has no picture for it")
+    return best
+
+
+def image_url(rid):
+    try:
+        return riftcodex_url(rid)
+    except LookupError:
+        return gallery_url(rid)
 
 
 def listing_base(c):

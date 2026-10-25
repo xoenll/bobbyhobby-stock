@@ -6,17 +6,14 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow==11.0.0
       - run: |
-          curl -sSL -A "Mozilla/5.0" https://playriftbound.com/en-us/card-gallery/ -o g.html
-          ls -la g.html
-          grep -o '<script[^>]*id="__NEXT_DATA__"' g.html | head -2 || true
-          grep -o 'RAD-133[a-z*]*' g.html | sort | uniq -c | head
-          python3 - <<'PY'
-          import re
-          h=open('g.html',encoding='utf-8',errors='replace').read()
-          for m in list(re.finditer(r'RAD-133a', h))[:2]:
-              print('CTX>>', h[max(0,m.start()-1500):m.start()+800].replace('\\n',' '))
-          print('SCRIPTS', re.findall(r'<script[^>]+src="([^"]+)"', h)[:15])
-          print('JSONURLS', sorted(set(re.findall(r'https?://[^"\'\\s]+\.json', h)))[:20])
-          print('CMS', len(re.findall('cmsassets.rgpub.io', h)))
-          PY
+          python3 -I sync/images.py --repo "$GITHUB_WORKSPACE"
+          python3 -I sync/images.py --repo "$GITHUB_WORKSPACE" --dry-run
+          grep -o '"rad-133a":\[[0-9,]*\]' index.html
+          python3 -c "
+          from PIL import Image;im=Image.open('sprites/s24.webp');c=im.crop((3*260,2*363,4*260,3*363));print('cell mean',sum(c.convert('L').getdata())/(260*363))"
