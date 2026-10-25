@@ -1,0 +1,61 @@
+# Adds a picture for every card on the stock site that has none (see sync/images.py).
+# Runs on GitHub's servers after each sync push, because the Claude cloud environment that runs
+# the sync can't reach the picture sources. Fails (so GitHub emails the owner) if any card
+# still has no picture afterwards.
+name: Card pictures
+
+on:
+  push:
+    branches: [main]
+    paths: [index.html, sync/cards.json, sync/images.py]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: card-pictures
+  cancel-in-progress: false
+
+jobs:
+  pictures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow==11.0.0
+      - name: Add missing pictures and push
+        run: |
+          git config user.name "Bobby Hobby Pictures"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp sync/images.py "$RUNNER_TEMP/images.py"
+          ok=0
+          for attempt in 1 2 3 4; do
+            git fetch -q --depth 1 origin main
+            git reset -q --hard origin/main
+            python3 -I "$RUNNER_TEMP/images.py" --repo "$GITHUB_WORKSPACE" | tee "$RUNNER_TEMP/out.json"
+            if git diff --quiet -- index.html sprites; then echo "Nothing to add"; ok=1; break; fi
+            git add index.html sprites
+            git commit -q -m "Add card pictures"
+            if git push -q origin HEAD:main; then echo "Pushed"; ok=1; break; fi
+            echo "Push rejected (a sync pushed meanwhile); retrying on the new main"
+            sleep $((attempt * 5))
+          done
+          [ "$ok" = 1 ] || { echo "::error::Could not push pictures after 4 tries"; exit 1; }
+      - name: Check every card has a picture
+        run: |
+          python3 -I "$RUNNER_TEMP/images.py" --repo "$GITHUB_WORKSPACE" --dry-run | tee "$RUNNER_TEMP/left.json"
+          python3 -I - "$RUNNER_TEMP/out.json" "$RUNNER_TEMP/left.json" <<'EOF'
+          import json, sys
+          out, left = (json.load(open(p)) for p in sys.argv[1:3])
+          for f in out.get("failed", []):
+              print(f"::error::No picture for {f['id']} ({f['rid']}): {f['reason']}")
+          if left.get("missing"):
+              print("::error::Cards still showing a placeholder: " + ", ".join(left["missing"]))
+              sys.exit(1)
+          EOF
