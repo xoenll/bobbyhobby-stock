@@ -17,6 +17,7 @@ import argparse, glob, json, os, re, sys
 from datetime import datetime, timezone, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = "/home/claude/bobbyhobby-stock"
 SETORDER = ["OGN", "OGS", "SFD", "UNL", "VEN", "RAD"]
 SETNAME = {"OGN": "Origins", "OGS": "Origins: Proving Grounds", "SFD": "Spiritforged", "UNL": "Unleashed", "VEN": "Vendetta", "RAD": "Radiance"}
 CATTYPE = {"legends": "Legend", "sigspells": "Signature Spell", "champunits": "Champion Unit", "spells": "Spell", "gear": "Gear",
@@ -51,11 +52,14 @@ def main():
     ap.add_argument("--counts", required=True, help="dir of checklist counts/*.json")
     ap.add_argument("--ledger", required=True, help="dir of checklist ledger/*.json (may be empty)")
     ap.add_argument("--orders", required=True, help="dir of Orders orders/*.json")
-    ap.add_argument("--site", default=os.path.join(HERE, "..", "index.html"))
-    ap.add_argument("--out", default=os.path.join(HERE, "out"))
+    ap.add_argument("--repo", default=REPO, help="clone of xoenll/bobbyhobby-stock")
+    ap.add_argument("--site", default=None, help="defaults to <repo>/index.html")
+    ap.add_argument("--out", default=None, help="defaults to <repo>/sync/out")
     a = ap.parse_args()
+    a.site = a.site or os.path.join(a.repo, "index.html")
+    a.out = a.out or os.path.join(a.repo, "sync", "out")
 
-    cards = json.load(open(os.path.join(HERE, "cards.json")))
+    cards = json.load(open(os.path.join(a.repo, "sync", "cards.json")))
     by_key = {c["key"]: c for c in cards}
     by_base = {listing_base(c): c for c in cards}
     counts = load_dir(a.counts)
