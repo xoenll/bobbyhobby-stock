@@ -1,0 +1,49 @@
+# Checks every card picture on the stock site against the official picture for that exact printing
+# (regular vs alt art / overnumbered / signed) and, in apply mode, replaces the wrong ones.
+# Run it by pushing a change to sync/verify-pictures.txt: first line "report" or "apply <threshold>".
+name: Verify card pictures
+
+on:
+  push:
+    branches: [main]
+    paths: [sync/verify-pictures.txt]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: card-pictures
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow==11.0.0
+      - name: Verify (and maybe replace) pictures, then push
+        run: |
+          git config user.name "Bobby Hobby Pictures"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp sync/images.py sync/verify_pictures.py "$RUNNER_TEMP/"
+          read -r mode thr < sync/verify-pictures.txt || true
+          args="--threshold ${thr:-30}"; [ "$mode" = "apply" ] && args="$args --apply"
+          ok=0
+          for attempt in 1 2 3 4; do
+            git fetch -q --depth 1 origin main
+            git reset -q --hard origin/main
+            python3 -I "$RUNNER_TEMP/verify_pictures.py" --repo "$GITHUB_WORKSPACE" $args
+            git add sync/verify-report.json index.html sprites
+            git diff --cached --quiet && { ok=1; break; }
+            git commit -q -m "Verify card pictures ($mode)"
+            if git push -q origin HEAD:main; then echo "Pushed"; ok=1; break; fi
+            sleep $((attempt * 5))
+          done
+          [ "$ok" = 1 ] || { echo "::error::Could not push after 4 tries"; exit 1; }
