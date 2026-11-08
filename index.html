@@ -119,6 +119,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 /* how to order: Bobby (the shop cat) with a comic speech bubble.
    Wide screens: she sits in the empty left margin, flush with the bottom-left corner of the window, bubble above her.
    Narrower screens: she sits above the filters on a black "shelf" line, bubble to her right. No box behind her. */
+.dockin{display:contents}
 .bobby-dock{position:relative;margin-top:24px;display:grid;grid-template-columns:230px minmax(0,1fr);align-items:end;border-bottom:3px solid var(--ink)}
 .bobby-dock .bobby{display:block;width:100%;height:auto;max-height:280px;object-fit:contain;object-position:left bottom;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 16%);mask-image:linear-gradient(to right,transparent 0,#000 16%)}
 .bub{position:relative;align-self:center;margin:24px 8px 22px 30px}
@@ -140,7 +141,11 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 .bub .fine{margin:10px 0 0;padding-top:8px;border-top:2px dashed var(--line);font-size:12.5px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:2px}
 .bub .fine b{color:var(--ink)}
 @media (min-width:1820px) and (min-height:760px){
-  .bobby-dock{position:fixed;left:0;bottom:0;z-index:4;margin:0;width:calc((100vw - 1200px) / 2 - 24px);max-width:420px;display:flex;flex-direction:column;align-items:flex-start;border:0}
+  /* a column in the left margin, from the top of the stock list to the end; Bobby sticks to the window's bottom-left corner while you scroll,
+     so she never covers the header at the top of the page */
+  main > .in{position:relative}
+  .bobby-dock{position:absolute;top:0;bottom:0;left:calc((100vw - 1200px) / -2);width:calc((100vw - 1200px) / 2 - 24px);max-width:420px;margin:0;display:block;border:0;z-index:4;pointer-events:none}
+  .dockin{position:sticky;top:calc(100vh - var(--dockh, 760px));display:flex;flex-direction:column;align-items:flex-start;pointer-events:auto}
   .bobby-dock .bub{order:-1;align-self:stretch;margin:0 26px 40px 20px}
   .bub .tail.side{display:none}
   .bub .tail.down{display:block}
@@ -256,7 +261,7 @@ main{padding-bottom:110px}
 
 <main class="gut"><div class="in">
 
-  <aside class="bobby-dock" aria-labelledby="howTitle">
+  <aside class="bobby-dock" aria-labelledby="howTitle"><div class="dockin">
     <img class="bobby" src="img/bobby.webp" width="387" height="560" alt="Bobby, the Bobby Hobby shop cat">
     <div class="bub">
       <div class="bubin">
@@ -273,7 +278,7 @@ main{padding-bottom:110px}
       <svg class="tail side" viewBox="0 0 41 34" aria-hidden="true"><path d="M41 3 C 28 6 14 14 3 31 C 16 25 28 23 41 23"/></svg>
       <svg class="tail down" viewBox="0 0 36 40" aria-hidden="true"><path d="M4 0 C 8 14 6 26 2 38 C 14 28 24 14 32 0"/></svg>
     </div>
-  </aside>
+  </div></aside>
 
   <div id="viewStock" class="stockview">
   <div class="bar" id="bar">
@@ -515,6 +520,7 @@ document.addEventListener("click", e => {
 $("q").addEventListener("input", e => { st.q = e.target.value; render(); });
 $("avail").addEventListener("change", e => { st.avail = e.target.checked; render(); });
 tidyCart(); cart = cart.filter(c => c.cap > 0 || c.q > 0); stats(); chips(); render(); renderCart();
+{ const di = document.querySelector('.dockin'); const fit = () => document.documentElement.style.setProperty('--dockh', di.offsetHeight + 'px'); fit(); addEventListener('resize', fit); di.querySelector('img').addEventListener('load', fit); if (document.fonts) document.fonts.ready.then(fit); }
 </script>
 
 </body></html>
