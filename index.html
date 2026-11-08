@@ -118,15 +118,31 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 
 .stockview{padding-top:14px}
 /* cart: add buttons on each printing, a floating cart button, and a drawer that builds the order message */
-.add{font:inherit;font-size:11.5px;font-weight:800;cursor:pointer;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);border-radius:7px;padding:1px 8px;line-height:1.5;box-shadow:2px 2px 0 var(--ink)}
+.add{font:inherit;font-size:12px;font-weight:800;cursor:pointer;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);border-radius:8px;padding:3px 9px;line-height:1.35;white-space:nowrap;box-shadow:2px 2px 0 var(--ink)}
+.slot.buyable{flex-direction:column;align-items:stretch;gap:5px}
+.srow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.srow .res{flex-basis:auto;margin-left:auto}
+.buy{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.buy .px{margin-left:0}
+.ctl{margin-left:auto;display:inline-flex}
+.tstep{display:inline-flex;align-items:center;border:2px solid var(--ink);border-radius:8px;overflow:hidden;background:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.tstep button{font:inherit;font-weight:800;font-size:15px;line-height:1;cursor:pointer;border:0;background:var(--yellow);color:var(--ink);width:28px;height:26px;padding:0}
+.tstep button:disabled{opacity:.4;cursor:default}
+.tstep span{min-width:26px;text-align:center;color:var(--yellow);font-weight:800;font-size:13px;font-variant-numeric:tabular-nums}
+.tstep button:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
 .add:active{transform:translate(2px,2px);box-shadow:none}
 .add.in{background:var(--ink);color:var(--yellow)}
 .add:disabled{opacity:.45;cursor:default;box-shadow:none}
 .add:focus-visible,.cartbtn:focus-visible,.drawer button:focus-visible,.drawer textarea:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.cartbtn{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;display:flex;align-items:center;gap:8px;font:inherit;font-weight:800;font-size:15px;cursor:pointer;border:3px solid var(--ink);background:var(--yellow);color:var(--ink);border-radius:999px;padding:10px 18px;box-shadow:4px 4px 0 var(--ink)}
-.cartbtn .ct{background:var(--ink);color:var(--yellow);border-radius:999px;min-width:24px;padding:0 7px;text-align:center;font-size:13px}
-.cartbtn.bump{animation:bump .3s}
-@keyframes bump{50%{transform:scale(1.08)}}
+.cartbtn{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:15;width:min(560px,calc(100% - 32px));display:flex;align-items:center;gap:12px;font:inherit;font-weight:800;font-size:17px;cursor:pointer;border:3px solid var(--ink);background:var(--ink);color:var(--yellow);border-radius:16px;padding:14px 18px;box-shadow:0 0 0 3px var(--yellow),6px 8px 0 rgba(17,17,17,.35);text-align:left}
+.cartbtn .ci1{font-size:22px;line-height:1}
+.cartbtn .cl{font-family:var(--display);font-weight:400;font-size:21px;letter-spacing:.4px;white-space:nowrap}
+.cartbtn .ct{background:var(--yellow);color:var(--ink);border-radius:999px;padding:1px 10px;font-size:13px;white-space:nowrap}
+.cartbtn .cs{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--paper);white-space:nowrap}
+.cartbtn .ca{font-size:22px;line-height:1;background:var(--yellow);color:var(--ink);border-radius:10px;padding:2px 10px}
+.cartbtn.bump{animation:bump .35s}
+@keyframes bump{50%{transform:translateX(-50%) scale(1.04)}}
+@media (max-width:420px){.cartbtn{gap:8px;padding:12px 14px}.cartbtn .cl{font-size:18px}.cartbtn .ci1{display:none}}
 .scrim{position:fixed;inset:0;background:rgba(17,17,17,.45);z-index:30}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:31;background:var(--paper);border-left:3px solid var(--ink);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .dhd{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);padding:12px 16px}
@@ -134,7 +150,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 .dhd .x{margin-left:auto;font:inherit;font-size:22px;line-height:1;cursor:pointer;background:transparent;border:0;color:var(--paper);padding:4px 8px}
 .dbody{flex:1;overflow:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .dbody>*{flex:none}
-main{padding-bottom:96px}
+main{padding-bottom:110px}
 .citems{display:flex;flex-direction:column;border:2.5px solid var(--ink);border-radius:12px;overflow:hidden}
 .ci{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 10px;align-items:center;padding:9px 12px;border-bottom:1.5px solid var(--line)}
 .ci:last-child{border-bottom:0}
@@ -208,7 +224,7 @@ main{padding-bottom:96px}
   <footer>This page is a guide to our stock and updates when we post new orders, so a card can sell out before the next update. Reserved cards are on hold for a customer and may open up again. PM the Bobby Hobby page to confirm.</footer>
 </div></main>
 
-<button type="button" class="cartbtn" id="cartBtn" aria-haspopup="dialog" hidden>🛒 Cart <span class="ct" id="cartCt">0</span></button>
+<button type="button" class="cartbtn" id="cartBtn" aria-haspopup="dialog" hidden><span class="ci1" aria-hidden="true">🛒</span><span class="cl">View my cart</span><span class="ct" id="cartCt">0</span><span class="cs" id="cartSum"></span><span class="ca" aria-hidden="true">→</span></button>
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
   <div class="dhd"><h2 id="cartTitle">Your cart</h2><button type="button" class="x" id="cartClose" aria-label="Close cart">✕</button></div>
@@ -253,8 +269,8 @@ function slot(x, label, cls, rid, v) {
   const state = l > 0 ? `<span class="qty">${l} left</span>` : x.res > 0 ? `<span class="stamp held">Reserved</span>` : `<span class="stamp out">Sold out</span>`;
   const price = l > 0 ? (x.p ? `<span class="px">${peso(x.p)}</span>` : `<span class="px none">PM for price</span>`) : "";
   const res = x.res > 0 && l > 0 ? `<span class="res">${x.res} reserved</span>` : "";
-  const add = l > 0 && rid ? addBtn(rid, v, l) : "";
-  return `<div class="slot"><span class="lb ${cls || ""}">${label}</span>${state}${price}${add}${res}</div>`;
+  if (l > 0 && rid) return `<div class="slot buyable"><div class="srow"><span class="lb ${cls || ""}">${label}</span>${state}${res}</div><div class="buy">${price}<span class="ctl" data-ctl="${esc(rid)}|${v}">${addBtn(rid, v, l)}</span></div></div>`;
+  return `<div class="slot"><span class="lb ${cls || ""}">${label}</span>${state}${price}${res}</div>`;
 }
 function tileHtml(r) {
   const tag = (r.n.match(/\(([^)]+)\)$/) || [])[1];
@@ -270,7 +286,8 @@ function tileHtml(r) {
   const pic = sp ? `<div class="card sp" role="img" aria-label="${esc(r.n)}" data-k="${sp[0]}" style="background-position:${(sp[1] % 8) / 7 * 100}% ${Math.floor(sp[1] / 8) / 2 * 100}%"></div>` : "";
   return `<article class="tile${a ? "" : " gone"}"><div class="art${sp ? "" : " noimg"}" style="--c:${bg}">${pic}<div class="ph">${icon ? `<img src="${icon}" alt="">` : ""}<span>${esc(name)}</span></div>${tag ? `<span class="tag">${esc(tag)}</span>` : ""}${stamp}</div><div class="info"><b class="nm">${esc(name)}</b><span class="meta">${dd}${esc(r.set)} #${esc(r.no)} · ${esc(r.t)}${r.r ? " · " + esc(r.r) : ""}</span><div class="slots">${slots}</div></div></article>`;
 }
-const sheet = el => { el.style.backgroundImage = `url(sprites/s${String(el.dataset.k).padStart(2, "0")}.webp)`; };
+const SHEETV = {}; for (const [k, c] of Object.values(SPR)) SHEETV[k] = (SHEETV[k] || 0) + 1;
+const sheet = el => { el.style.backgroundImage = `url(sprites/s${String(el.dataset.k).padStart(2, "0")}.webp?v=${SHEETV[el.dataset.k] || 0})`; };
 const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { sheet(e.target); io.unobserve(e.target); } }), { rootMargin: "800px 0px" }) : null;
 function watchPics() { if (io) io.disconnect(); document.querySelectorAll("#list .sp").forEach(el => io ? io.observe(el) : sheet(el)); }
 function render() {
@@ -308,8 +325,9 @@ const saveCart = () => { try { localStorage.setItem(CART_KEY, JSON.stringify({ i
 const slotOf = (id, v) => { const r = BYID[id]; return r ? r[v] : null; };
 const inCart = (id, v) => (cart.find(c => c.id === id && c.v === v) || {}).q || 0;
 function addBtn(id, v, l) {
-  const q = inCart(id, v);
-  return `<button type="button" class="add${q ? " in" : ""}" data-add="${esc(id)}" data-v="${v}" ${q >= l ? "disabled" : ""} aria-label="Add ${esc(BYID[id].n)} ${v === "f" ? "foil" : "non-foil"} to cart">${q ? "In cart · " + q : "+ Add"}</button>`;
+  const q = inCart(id, v), nm = `${esc(BYID[id].n)} ${v === "f" ? "foil" : "non-foil"}`;
+  if (!q) return `<button type="button" class="add" data-add="${esc(id)}" data-v="${v}" aria-label="Add ${nm} to cart">Add to cart</button>`;
+  return `<span class="tstep" role="group" aria-label="${nm} in cart"><button type="button" data-tdec="${esc(id)}" data-v="${v}" aria-label="One less">−</button><span aria-live="polite">${q}</span><button type="button" data-add="${esc(id)}" data-v="${v}" ${q >= l ? "disabled" : ""} aria-label="One more">+</button></span>`;
 }
 // keep the cart honest after a stock update: drop gone printings, cap at what's left
 function tidyCart() {
@@ -340,7 +358,8 @@ function renderCart() {
   tidyCart();
   const n = cartCount();
   $("cartBtn").hidden = n === 0 && $("drawer").hidden;
-  $("cartCt").textContent = n;
+  $("cartCt").textContent = n + (n === 1 ? " card" : " cards");
+  { let t = 0; for (const c of cart) { const x = slotOf(c.id, c.v); if (x && x.p) t += x.p * Math.min(c.q, c.cap); } $("cartSum").textContent = t ? peso(t) : ""; }
   if ($("drawer").hidden) return;
   if (!cart.length) {
     $("cartBody").innerHTML = `<div class="cempty">Your cart is empty.<br>Tap <b>+ Add</b> on any card to start an order.</div>`;
@@ -374,8 +393,10 @@ function closeCart() { $("drawer").hidden = true; $("scrim").hidden = true; docu
 let toastT;
 function toast(m) { const t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); }
 function refreshTile(id, v) {
-  const b = document.querySelector(`.add[data-add="${CSS.escape(id)}"][data-v="${v}"]`); if (!b) return;
-  const x = slotOf(id, v); b.outerHTML = addBtn(id, v, left(x));
+  const el = document.querySelector(`.ctl[data-ctl="${CSS.escape(id + "|" + v)}"]`); if (!el) return;
+  const had = el.contains(document.activeElement), x = slotOf(id, v);
+  el.innerHTML = addBtn(id, v, left(x));
+  if (had) (el.querySelector("[data-add]:not(:disabled)") || el.querySelector("button")).focus();
 }
 async function copyOrder() {
   const t = orderText(); if (!t) return;
@@ -385,7 +406,13 @@ async function copyOrder() {
   toast(ok ? "Copied! Paste it in a PM to the Bobby Hobby page" : "Select the message and copy it");
 }
 document.addEventListener("click", e => {
-  const a = e.target.closest(".add");
+  const dn = e.target.closest("[data-tdec]");
+  if (dn) {
+    const id = dn.dataset.tdec, v = dn.dataset.v, i = cart.findIndex(c => c.id === id && c.v === v); if (i < 0) return;
+    if (cart[i].q > 1) cart[i].q--; else cart.splice(i, 1);
+    saveCart(); refreshTile(id, v); renderCart(); return;
+  }
+  const a = e.target.closest("[data-add]");
   if (a) {
     const id = a.dataset.add, v = a.dataset.v, x = slotOf(id, v); if (!x) return;
     const c = cart.find(c => c.id === id && c.v === v);
