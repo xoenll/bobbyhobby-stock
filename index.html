@@ -119,13 +119,18 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 /* how to order: Bobby (the shop cat) with a comic speech bubble.
    Wide screens: she sits in the empty left margin, flush with the bottom-left corner of the window, bubble above her.
    Narrower screens: she sits above the filters on a black "shelf" line, bubble to her right. No box behind her. */
-.bobby-dock{position:relative;margin-top:14px;display:grid;grid-template-columns:230px minmax(0,1fr);align-items:end;border-bottom:3px solid var(--ink)}
+.bobby-dock{position:relative;margin-top:24px;display:grid;grid-template-columns:230px minmax(0,1fr);align-items:end;border-bottom:3px solid var(--ink)}
 .bobby-dock .bobby{display:block;width:100%;height:auto;max-height:280px;object-fit:contain;object-position:left bottom;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 16%);mask-image:linear-gradient(to right,transparent 0,#000 16%)}
-.bub{position:relative;align-self:center;margin:10px 0 18px 4px;background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:4px 4px 0 var(--ink);padding:14px 18px}
-.bub::before,.bub::after{content:"";position:absolute;left:-22px;bottom:34px;border-style:solid;border-width:12px 22px 12px 0;border-color:transparent var(--ink) transparent transparent}
-.bub::after{left:-15px;bottom:37px;border-width:9px 17px 9px 0;border-color:transparent var(--paper) transparent transparent}
-.bub h2{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1;letter-spacing:.4px}
-.bub h2 span{color:var(--logo)}
+.bub{position:relative;align-self:center;margin:24px 8px 22px 30px}
+.bub::before{content:"";position:absolute;inset:0;transform:translate(10px,10px);border-radius:30px 36px 32px 26px / 32px 26px 36px 30px;background-image:radial-gradient(var(--ink) 1.7px,transparent 1.9px);background-size:7px 7px;opacity:.85}
+.bubin{position:relative;z-index:1;background:var(--paper);border:3.5px solid var(--ink);border-radius:30px 36px 32px 26px / 32px 26px 36px 30px;padding:24px 20px 14px}
+.bub .cap{position:absolute;z-index:3;top:-20px;left:18px;margin:0;background:var(--yellow);border:3px solid var(--ink);border-radius:8px;padding:3px 14px 4px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-3deg);font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
+.bub .hi{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;letter-spacing:.3px}
+.bub .hi span{color:var(--logo)}
+.bub .tail{position:absolute;z-index:2;overflow:visible}
+.bub .tail.side{left:-37px;bottom:30px;width:41px;height:34px}
+.bub .tail.down{display:none;left:46px;bottom:-37px;width:36px;height:40px}
+.bub .tail path{fill:var(--paper);stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round;stroke-linecap:round}
 .bub ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;counter-reset:st}
 .bub li{counter-increment:st;display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:14px;line-height:1.4}
 .bub li::before{content:counter(st);flex:none;width:24px;height:24px;border-radius:50%;background:var(--yellow);border:2px solid var(--ink);font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;margin-top:-1px}
@@ -133,20 +138,23 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 .bub .pill.y{background:var(--yellow);color:var(--ink)}
 .bub .pill.k{background:var(--ink);color:var(--yellow)}
 .bub .fine{margin:10px 0 0;padding-top:8px;border-top:2px dashed var(--line);font-size:12.5px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.bub .fine b{color:var(--ink)}
 @media (min-width:1820px) and (min-height:760px){
   .bobby-dock{position:fixed;left:0;bottom:0;z-index:4;margin:0;width:calc((100vw - 1200px) / 2 - 24px);max-width:420px;display:flex;flex-direction:column;align-items:flex-start;border:0}
-  .bobby-dock .bub{order:-1;align-self:stretch;margin:0 0 22px 20px}
-  .bub::before{left:56px;bottom:-22px;border-width:22px 12px 0 12px;border-color:var(--ink) transparent transparent transparent}
-  .bub::after{left:59px;bottom:-15px;border-width:17px 9px 0 9px;border-color:var(--paper) transparent transparent transparent}
+  .bobby-dock .bub{order:-1;align-self:stretch;margin:0 26px 40px 20px}
+  .bub .tail.side{display:none}
+  .bub .tail.down{display:block}
   .bobby-dock .bobby{width:min(300px,85%);max-height:none;-webkit-mask-image:none;mask-image:none}
 }
 @media (max-width:720px){
   .bobby-dock{grid-template-columns:104px minmax(0,1fr)}
   .bobby-dock .bobby{max-height:170px;width:auto;max-width:none;justify-self:start}
-  .bub{margin:8px 0 12px 2px;padding:10px 11px;border-radius:14px}
-  .bub::before{left:-18px;bottom:26px;border-width:10px 18px 10px 0}
-  .bub::after{left:-12px;bottom:29px;border-width:7px 13px 7px 0}
-  .bub h2{font-size:17px;margin-bottom:6px}
+  .bub{margin:22px 4px 16px 24px}
+  .bub::before{transform:translate(7px,7px)}
+  .bubin{padding:20px 12px 10px}
+  .bub .cap{font-size:17px;top:-17px;left:12px;padding:2px 10px 3px}
+  .bub .hi{font-size:15.5px;margin-bottom:6px}
+  .bub .tail.side{left:-30px;bottom:22px;width:34px;height:28px}
   .bub ol{gap:5px}
   .bub li{font-size:12px;gap:7px;line-height:1.35}
   .bub li::before{width:20px;height:20px;font-size:11px}
@@ -203,6 +211,8 @@ main{padding-bottom:110px}
 .ci .sub{grid-row:1/3;grid-column:3;font-weight:800;font-variant-numeric:tabular-nums;text-align:right;min-width:56px}
 .ci .sub small{display:block;font-size:10.5px;color:var(--muted);font-weight:700}
 .ci .rm{grid-column:3;font:inherit;font-size:11px;font-weight:700;color:var(--muted);background:none;border:0;cursor:pointer;text-decoration:underline;padding:0;justify-self:end}
+.cfee{display:flex;justify-content:space-between;gap:10px;font-weight:700;font-size:13.5px;color:var(--muted);margin-bottom:-8px}
+.cfee small{font-size:11px;font-weight:700;border:1.5px solid var(--line);border-radius:4px;padding:0 4px;margin-left:4px}
 .ctot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:800}
 .ctot b{font-family:var(--display);font-weight:400;font-size:28px}
 .ctot .tbd{display:block;font-size:11.5px;color:var(--muted);font-weight:700}
@@ -249,14 +259,19 @@ main{padding-bottom:110px}
   <aside class="bobby-dock" aria-labelledby="howTitle">
     <img class="bobby" src="img/bobby.webp" width="387" height="560" alt="Bobby, the Bobby Hobby shop cat">
     <div class="bub">
-      <h2 id="howTitle">Hi, I'm <span>Bobby!</span> Here's how to order:</h2>
-      <ol>
-        <li><span>Tap <span class="pill y">Add to cart</span> on the cards you want.</span></li>
-        <li><span>Tap <span class="pill k">View my cart</span> and pick LBC, Lalamove or Grab.</span></li>
-        <li><span>Copy your order message and PM it to our Facebook page.</span></li>
-        <li><span>We'll confirm your cards and send payment details.</span></li>
-      </ol>
-      <p class="fine"><span>📍 Cards come from Las Piñas (BF Homes)</span><span>📦 LBC ships on Fridays · ₱400 minimum for LBC</span></p>
+      <div class="bubin">
+        <h2 class="cap" id="howTitle">How to order!</h2>
+        <p class="hi">Hi, I'm <span>Bobby!</span> Here's how it works:</p>
+        <ol>
+          <li><span>Tap <span class="pill y">Add to cart</span> on the cards you want.</span></li>
+          <li><span>Tap <span class="pill k">View my cart</span> and pick LBC, Lalamove or Grab.</span></li>
+          <li><span>Copy your order message and PM it to our Facebook page.</span></li>
+          <li><span>We'll confirm your cards and send payment details.</span></li>
+        </ol>
+        <p class="fine"><span>📍 Cards come from Las Piñas (BF Homes)</span><span>📦 LBC ships on Fridays · ₱400 minimum · <b>+₱100 LBC SF, flat rate</b></span></p>
+      </div>
+      <svg class="tail side" viewBox="0 0 41 34" aria-hidden="true"><path d="M41 3 C 28 6 14 14 3 31 C 16 25 28 23 41 23"/></svg>
+      <svg class="tail down" viewBox="0 0 36 40" aria-hidden="true"><path d="M4 0 C 8 14 6 26 2 38 C 14 28 24 14 32 0"/></svg>
     </div>
   </aside>
 
@@ -370,7 +385,7 @@ function render() {
 }
 
 /* ---------- cart: kept in this browser only; the order goes out as a message the customer pastes in a PM ---------- */
-const LBC_MIN = 400, CART_KEY = "bh-cart-v1";
+const LBC_MIN = 400, LBC_FEE = 100, CART_KEY = "bh-cart-v1";
 const BYID = Object.fromEntries(DATA.rows.map(r => [r.id, r]));
 let cart = [], delivery = "";
 try { const saved = JSON.parse(localStorage.getItem(CART_KEY) || "null"); if (saved) { cart = saved.items || []; delivery = ["lbc", "lalamove", "grab"].includes(saved.delivery) ? saved.delivery : ""; } } catch {}
@@ -405,6 +420,7 @@ function orderText() {
   const how = { lbc: " (for LBC shipping)", lalamove: " (for Lalamove delivery)", grab: " (for Grab delivery)" }[delivery] || "";
   return `Hi Bobby Hobby! I'd like to order these${how}, price each:\n` + lines.join("\n") +
     `\nTotal: ${peso(tot)}${tbd ? ` + ${tbd} card${tbd > 1 ? "s" : ""} to price` : ""} · ${n} card${n > 1 ? "s" : ""}` +
+    (delivery === "lbc" ? `\nFor LBC: +${peso(LBC_FEE)} shipping fee (flat rate) = ${peso(tot + LBC_FEE)}${tbd ? " + cards to price" : ""}` : "") +
     `\nThanks!`;
 }
 function renderCart() {
@@ -434,7 +450,8 @@ function renderCart() {
   const lbc = delivery === "lbc" ? (tot >= LBC_MIN ? `<span class="lbcnote ok">Meets the ${peso(LBC_MIN)} LBC minimum</span>` : `<span class="lbcnote short">${peso(LBC_MIN - tot)} more to reach the ${peso(LBC_MIN)} LBC minimum</span>`) : "";
   const txt = orderText();
   $("cartBody").innerHTML = `<div class="citems">${items}</div>
-    <div class="ctot"><span>Total · ${cartCount()} card${cartCount() > 1 ? "s" : ""}${tbd ? `<span class="tbd">+ ${tbd} card${tbd > 1 ? "s" : ""} we'll price in the PM</span>` : ""}</span><b>${peso(tot)}</b></div>
+    ${delivery === "lbc" ? `<div class="cfee"><span>Cards · ${cartCount()} card${cartCount() > 1 ? "s" : ""}</span><span>${peso(tot)}</span></div><div class="cfee"><span>LBC shipping fee <small>flat rate</small></span><span>+${peso(LBC_FEE)}</span></div>` : ""}
+    <div class="ctot"><span>${delivery === "lbc" ? "Total with shipping" : `Total · ${cartCount()} card${cartCount() > 1 ? "s" : ""}`}${tbd ? `<span class="tbd">+ ${tbd} card${tbd > 1 ? "s" : ""} we'll price in the PM</span>` : ""}</span><b>${peso(tot + (delivery === "lbc" ? LBC_FEE : 0))}</b></div>
     <div class="dlv"><span class="lab">How do you want it delivered?</span>
       <div class="seg" role="group" aria-label="Delivery">${[["lbc", "LBC"], ["lalamove", "Lalamove"], ["grab", "Grab"]].map(([k, l]) => `<button type="button" data-dlv="${k}" aria-pressed="${delivery === k}">${l}</button>`).join("")}</div>${lbc}<span class="from">📍 Cards will be coming from Las Piñas (BF Homes)</span></div>
     <div class="msgh"><span class="lab">Your order message</span></div>
