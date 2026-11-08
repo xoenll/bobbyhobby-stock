@@ -125,7 +125,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
 .bub::before{content:"";position:absolute;inset:0;transform:translate(10px,10px);border-radius:30px 36px 32px 26px / 32px 26px 36px 30px;background-image:radial-gradient(var(--ink) 1.7px,transparent 1.9px);background-size:7px 7px;opacity:.85}
 .bubin{position:relative;z-index:1;background:var(--paper);border:3.5px solid var(--ink);border-radius:30px 36px 32px 26px / 32px 26px 36px 30px;padding:24px 20px 14px}
 .bub .cap{position:absolute;z-index:3;top:-20px;left:18px;margin:0;background:var(--yellow);border:3px solid var(--ink);border-radius:8px;padding:3px 14px 4px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-3deg);font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
-.bub .hi{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;letter-spacing:.3px}
+.bub .hi{margin:0 0 8px;font-family:var(--sans);font-weight:800;font-size:17px;line-height:1.25;letter-spacing:0}
 .bub .hi span{color:var(--logo)}
 .bub .tail{position:absolute;z-index:2;overflow:visible}
 .bub .tail.side{left:-37px;bottom:30px;width:41px;height:34px}
@@ -153,7 +153,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
   .bub::before{transform:translate(7px,7px)}
   .bubin{padding:20px 12px 10px}
   .bub .cap{font-size:17px;top:-17px;left:12px;padding:2px 10px 3px}
-  .bub .hi{font-size:15.5px;margin-bottom:6px}
+  .bub .hi{font-size:14px;margin-bottom:6px}
   .bub .tail.side{left:-30px;bottom:22px;width:34px;height:28px}
   .bub ol{gap:5px}
   .bub li{font-size:12px;gap:7px;line-height:1.35}
@@ -228,7 +228,7 @@ main{padding-bottom:110px}
 .msgh{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .drawer textarea{width:100%;font:13px/1.45 var(--sans);font-weight:500;border:2px solid var(--ink);border-radius:10px;padding:10px 12px;background:#f7f8fa;color:var(--ink);resize:vertical;min-height:160px}
 .howto{margin:0;padding-left:18px;font-size:12.5px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;gap:2px}
-.dft{display:flex;gap:8px;padding:12px 16px;border-top:2.5px solid var(--ink);background:var(--ground)}
+.dft{display:flex;gap:8px;padding-bottom:8px}
 .dft .go{flex:1;font:inherit;font-weight:800;font-size:15px;cursor:pointer;border:3px solid var(--ink);background:var(--yellow);color:var(--ink);border-radius:10px;padding:10px;box-shadow:3px 3px 0 var(--ink)}
 .dft .go:active{transform:translate(3px,3px);box-shadow:none}
 .dft .clr{font:inherit;font-weight:700;cursor:pointer;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:10px;padding:10px 12px}
@@ -266,7 +266,7 @@ main{padding-bottom:110px}
           <li><span>Tap <span class="pill y">Add to cart</span> on the cards you want.</span></li>
           <li><span>Tap <span class="pill k">View my cart</span> and pick LBC, Lalamove or Grab.</span></li>
           <li><span>Copy your order message and PM it to our Facebook page.</span></li>
-          <li><span>We'll confirm your cards and send payment details.</span></li>
+          <li><span>Wait for our confirmation that your cards are reserved for you. We'll send the payment details.</span></li>
         </ol>
         <p class="fine"><span>📍 Cards come from Las Piñas (BF Homes)</span><span>📦 LBC ships on Fridays · ₱400 minimum · <b>+₱100 LBC SF, flat rate</b></span></p>
       </div>
@@ -296,7 +296,6 @@ main{padding-bottom:110px}
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
   <div class="dhd"><h2 id="cartTitle">Your cart</h2><button type="button" class="x" id="cartClose" aria-label="Close cart">✕</button></div>
   <div class="dbody" id="cartBody"></div>
-  <div class="dft" id="cartFoot"><button type="button" class="clr" id="cartClear">Clear</button><button type="button" class="go" id="cartCopy">Copy order message</button></div>
 </aside>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -431,10 +430,9 @@ function renderCart() {
   { let t = 0; for (const c of cart) { const x = slotOf(c.id, c.v); if (x && x.p) t += x.p * Math.min(c.q, c.cap); } $("cartSum").textContent = t ? peso(t) : ""; }
   if ($("drawer").hidden) return;
   if (!cart.length) {
-    $("cartBody").innerHTML = `<div class="cempty">Your cart is empty.<br>Tap <b>+ Add</b> on any card to start an order.</div>`;
-    $("cartFoot").hidden = true; return;
+    $("cartBody").innerHTML = `<div class="cempty">Your cart is empty.<br>Tap <b>Add to cart</b> on any card to start an order.</div>`;
+    return;
   }
-  $("cartFoot").hidden = false;
   let tot = 0, tbd = 0;
   const items = cart.map((c, i) => {
     const r = BYID[c.id], x = slotOf(c.id, c.v), p = x && x.p, q = Math.min(c.q, c.cap);
@@ -456,7 +454,8 @@ function renderCart() {
       <div class="seg" role="group" aria-label="Delivery">${[["lbc", "LBC"], ["lalamove", "Lalamove"], ["grab", "Grab"]].map(([k, l]) => `<button type="button" data-dlv="${k}" aria-pressed="${delivery === k}">${l}</button>`).join("")}</div>${lbc}<span class="from">📍 Cards will be coming from Las Piñas (BF Homes)</span></div>
     <div class="msgh"><span class="lab">Your order message</span></div>
     <textarea id="cartMsg" readonly rows="${Math.min(cart.length + 4, 14)}" aria-label="Order message to send the Bobby Hobby page">${esc(txt)}</textarea>
-    <ol class="howto"><li>Tap <b>Copy order message</b>.</li><li>PM the Bobby Hobby Facebook page and paste it.</li><li>We'll confirm what's available and send the payment details.</li></ol>`;
+    <ol class="howto"><li>Tap <b>Copy order message</b>.</li><li>PM the Bobby Hobby Facebook page and paste it.</li><li>Wait for our confirmation that your cards are reserved for you, then we'll send the payment details.</li></ol>
+    <div class="dft"><button type="button" class="clr" id="cartClear">Clear</button><button type="button" class="go" id="cartCopy">Copy order message</button></div>`;
 }
 function openCart() { $("drawer").hidden = false; $("scrim").hidden = false; renderCart(); $("cartClose").focus(); document.body.style.overflow = "hidden"; }
 function closeCart() { $("drawer").hidden = true; $("scrim").hidden = true; document.body.style.overflow = ""; renderCart(); $("cartBtn").focus(); }
