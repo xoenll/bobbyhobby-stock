@@ -39,8 +39,10 @@ jobs:
             git fetch -q --depth 1 origin main
             git reset -q --hard origin/main
             python3 -I "$RUNNER_TEMP/images.py" --repo "$GITHUB_WORKSPACE" | tee "$RUNNER_TEMP/out.json"
-            if git diff --quiet -- index.html sprites; then echo "Nothing to add"; ok=1; break; fi
-            git add index.html sprites
+            # keep the last run's result in the repo when a picture couldn't be fetched, so the reason can be read without the Actions page
+            python3 -I -c "import json,sys; o=json.load(open(sys.argv[1])); o['failed'] and json.dump(o, open(sys.argv[2], 'w'), indent=1)" "$RUNNER_TEMP/out.json" sync/pictures-log.json
+            if git diff --quiet -- index.html sprites && [ -z "$(git status --porcelain -- sync/pictures-log.json)" ]; then echo "Nothing to add"; ok=1; break; fi
+            git add index.html sprites sync/pictures-log.json 2>/dev/null || git add index.html sprites
             git commit -q -m "Add card pictures"
             if git push -q origin HEAD:main; then echo "Pushed"; ok=1; break; fi
             echo "Push rejected (a sync pushed meanwhile); retrying on the new main"
