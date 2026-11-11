@@ -79,6 +79,9 @@ main{padding-block:12px 56px}
 .tile.gone{opacity:.55}
 .art{position:relative;aspect-ratio:63/88;max-width:100%;background:var(--c);border-bottom:2.5px solid var(--ink);overflow:hidden}
 .art .card{position:absolute;inset:0;width:100%;height:100%;display:block;background-repeat:no-repeat;background-size:800% 300%}
+/* battlefields: pictures are stored turned sideways in the portrait sprite cells; show them landscape */
+.tile.bf .art{aspect-ratio:88/63}
+.tile.bf .card{inset:auto;left:50%;top:50%;width:calc(100% * 63 / 88);height:calc(100% * 88 / 63);transform:translate(-50%,-50%) rotate(90deg)}
 .art .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px;text-align:center;color:var(--paper);font-family:var(--display);font-size:17px;line-height:1.1;text-shadow:2px 2px 0 var(--ink)}
 .art .ph img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(2px 2px 0 var(--ink))}
 .art.noimg .card{display:none}
@@ -367,7 +370,7 @@ function tileHtml(r) {
   const icon = main ? DATA.icons[main[1]] : "";
   const sp = SPR[r.id];
   const pic = sp ? `<div class="card sp" role="img" aria-label="${esc(r.n)}" data-k="${sp[0]}" style="background-position:${(sp[1] % 8) / 7 * 100}% ${Math.floor(sp[1] / 8) / 2 * 100}%"></div>` : "";
-  return `<article class="tile${a ? "" : " gone"}"><div class="art${sp ? "" : " noimg"}" style="--c:${bg}">${pic}<div class="ph">${icon ? `<img src="${icon}" alt="">` : ""}<span>${esc(name)}</span></div>${tag ? `<span class="tag">${esc(tag)}</span>` : ""}${stamp}</div><div class="info"><b class="nm">${esc(name)}</b><span class="meta">${dd}${esc(r.set)} #${esc(r.no)} · ${esc(r.t)}${r.r ? " · " + esc(r.r) : ""}</span><div class="slots">${slots}</div></div></article>`;
+  return `<article class="tile${r.t === "Battlefield" ? " bf" : ""}${a ? "" : " gone"}"><div class="art${sp ? "" : " noimg"}" style="--c:${bg}">${pic}<div class="ph">${icon ? `<img src="${icon}" alt="">` : ""}<span>${esc(name)}</span></div>${tag ? `<span class="tag">${esc(tag)}</span>` : ""}${stamp}</div><div class="info"><b class="nm">${esc(name)}</b><span class="meta">${dd}${esc(r.set)} #${esc(r.no)} · ${esc(r.t)}${r.r ? " · " + esc(r.r) : ""}</span><div class="slots">${slots}</div></div></article>`;
 }
 const SHEETV = {}; for (const [k, c] of Object.values(SPR)) SHEETV[k] = (SHEETV[k] || 0) + 1;
 const sheet = el => { el.style.backgroundImage = `url(sprites/s${String(el.dataset.k).padStart(2, "0")}.webp?v=${SHEETV[el.dataset.k] || 0}.${SPRV[el.dataset.k] || 0})`; };
