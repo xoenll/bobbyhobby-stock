@@ -64,8 +64,8 @@ main{padding-block:12px 56px}
 .chip .dotc{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--c)}
 .chip .dotc img{width:11px;height:11px}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--yellow)}
-.bar .r.togs{gap:6px 18px}
-.prs{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+.bar .r.togs{gap:6px 18px;justify-content:center;margin-bottom:10px}
+.prs{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 18px}
 .tsep{width:2px;height:18px;background:var(--ink);opacity:.25;border-radius:1px}
 .tog{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;cursor:pointer}
 .tog input{width:17px;height:17px;accent-color:var(--ink)}
@@ -288,7 +288,7 @@ main{padding-bottom:110px}
   <div id="viewStock" class="stockview">
   <div class="bar" id="bar">
     <div class="r"><span class="srch"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" fill="none"/></svg><input id="q" type="search" placeholder="Search a card, e.g. Jinx or Brawl" aria-label="Search cards" autocomplete="off"></span></div>
-    <div class="r togs"><label class="tog"><input type="checkbox" id="avail" checked> In stock only</label><span class="tsep" aria-hidden="true"></span><span class="prs" role="group" aria-label="Printing (pick one)"><label class="tog"><input type="checkbox" data-pr="f"> Foils only</label><label class="tog"><input type="checkbox" data-pr="n"> Non-foils only</label><label class="tog"><input type="checkbox" data-pr="both"> Both foils and non-foils</label></span></div>
+    <div class="r togs"><label class="tog"><input type="checkbox" id="avail" checked> In stock only</label><span class="tsep" aria-hidden="true"></span><span class="prs" role="group" aria-label="Printing (pick one)"><label class="tog"><input type="checkbox" data-pr="f"> Foils only</label><label class="tog"><input type="checkbox" data-pr="n"> Non-foils only</label><label class="tog"><input type="checkbox" data-pr="both" checked> Both foils and non-foils</label></span></div>
     <div class="filt"><span class="fl" aria-hidden="true">Sort by:</span><div class="frows">
     <div class="r" role="group" aria-label="Filter by card type" id="typeChips"></div>
     <div class="r" role="group" aria-label="Filter by domain" id="domChips"></div>
@@ -318,7 +318,7 @@ const SPRV = {};   // sheet -> version, bumped by sync/verify_pictures.py when i
 const DOMS = [["Fury","fury"],["Calm","calm"],["Mind","mind"],["Body","body"],["Chaos","chaos"],["Order","order"]];
 const SETS = [["OGN","Origins"],["OGS","Proving Grounds"],["SFD","Spiritforged"],["UNL","Unleashed"],["VEN","Vendetta"],["RAD","Radiance"]];
 const TYPE_LABEL = { "Legend":"Legends","Champion Unit":"Champion Units","Signature Spell":"Signature Spells","Spell":"Spells","Gear":"Gear","Unit":"Units","SP Card":"SP Cards","Battlefield":"Battlefields","Rune":"Runes","Token":"Tokens" };
-const st = { q:"", dom:"all", set:"all", type:"all", avail:true, pr:"" };   // pr: "" | "f" | "n" | "both"
+const st = { q:"", dom:"all", set:"all", type:"all", avail:true, pr:"both" };   // pr: "f" | "n" | "both" (= every card)
 const TYPES = [["Legends",["Legend"]],["Units",["Unit","Champion Unit"]],["Battlefields",["Battlefield"]],["Spells",["Spell","Signature Spell"]],["Gear",["Gear"]]];
 const SIG_LABEL = { "Signature Spell":"Signature Spells","Champion Unit":"Signature Units","Unit":"Signature Units","Gear":"Signature Gear" };
 const $ = id => document.getElementById(id);
@@ -384,7 +384,7 @@ function render() {
   const rows = DATA.rows.filter(r =>
     (st.dom === "all" || (st.dom === "Colorless" ? colorless(r) : doms(r).includes(st.dom))) &&
     (st.type === "all" || TYPES.find(t => t[0] === st.type)[1].includes(r.t)) &&
-    (st.pr === "f" ? hasF(r) : st.pr === "n" ? hasN(r) : st.pr === "both" ? hasF(r) && hasN(r) : true) &&
+    (st.pr === "f" ? hasF(r) : st.pr === "n" ? hasN(r) : true) &&
     (st.set === "all" || r.set === st.set) &&
     (!st.avail || avail(r) > 0) &&
     (!qn || norm(r.n).includes(qn)));
@@ -539,10 +539,11 @@ document.addEventListener("click", e => {
 });
 $("q").addEventListener("input", e => { st.q = e.target.value; render(); });
 $("avail").addEventListener("change", e => { st.avail = e.target.checked; render(); });
-// printing boxes work like a pick-one: ticking one unticks the others; unticking shows every card
+// printing boxes: exactly one is always ticked (ticking one unticks the others; the ticked one can't be unticked)
 document.querySelectorAll("[data-pr]").forEach(cb => cb.addEventListener("change", () => {
+  if (!cb.checked) { cb.checked = true; return; }
   document.querySelectorAll("[data-pr]").forEach(o => { if (o !== cb) o.checked = false; });
-  st.pr = cb.checked ? cb.dataset.pr : ""; render();
+  st.pr = cb.dataset.pr; render();
 }));
 tidyCart(); cart = cart.filter(c => c.cap > 0 || c.q > 0); stats(); chips(); render(); renderCart();
 { const di = document.querySelector('.dockin'); const fit = () => document.documentElement.style.setProperty('--dockh', di.offsetHeight + 'px'); fit(); addEventListener('resize', fit); di.querySelector('img').addEventListener('load', fit); if (document.fonts) document.fonts.ready.then(fit); }
