@@ -157,8 +157,6 @@ def main():
     # ---- stock site rows
     rows = {}
     for x in catalog:
-        if x["t"] == "Battlefield":
-            continue
         base = x["k"].rsplit("-", 1)[0]
         r = rows.setdefault(base, {"id": base, "n": x["n"], "d": x["d"], "set": x["set"], "no": x["no"], "t": x["t"], "r": x["r"]})
         slot = {"s": x["s"], "p": x["p"], "res": held_live.get(x["k"], 0), "sold": sold_live.get(x["k"], 0)}
