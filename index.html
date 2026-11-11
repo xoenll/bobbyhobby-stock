@@ -64,7 +64,8 @@ main{padding-block:12px 56px}
 .chip .dotc{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--c)}
 .chip .dotc img{width:11px;height:11px}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--yellow)}
-.tog{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;cursor:pointer;margin-left:auto}
+.togs{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-left:auto}
+.tog{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;cursor:pointer}
 .tog input{width:17px;height:17px;accent-color:var(--ink)}
 .count{font-size:12.5px;font-weight:700;color:var(--muted)}
 .dom{margin-top:22px;background:var(--paper);border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);overflow:hidden}
@@ -108,7 +109,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);font-weight:600;max-wid
   .info b.nm{font-size:13px}
   .top img{height:96px}
   .top .hrow{flex-direction:column;gap:14px}
-  .tog{margin-left:0}
+  .togs{margin-left:0}
   .bar{position:static}
   .filt{flex-direction:column;gap:6px}
   .fl{font-size:22px;padding-top:0}
@@ -281,8 +282,9 @@ main{padding-bottom:110px}
 
   <div id="viewStock" class="stockview">
   <div class="bar" id="bar">
-    <div class="r"><span class="srch"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" fill="none"/></svg><input id="q" type="search" placeholder="Search a card, e.g. Jinx or Brawl" aria-label="Search cards" autocomplete="off"></span><label class="tog"><input type="checkbox" id="avail" checked> In stock only</label></div>
+    <div class="r"><span class="srch"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" fill="none"/></svg><input id="q" type="search" placeholder="Search a card, e.g. Jinx or Brawl" aria-label="Search cards" autocomplete="off"></span><span class="togs"><label class="tog"><input type="checkbox" id="avail" checked> In stock only</label><label class="tog"><input type="checkbox" id="onlyF"> Foils only</label><label class="tog"><input type="checkbox" id="onlyN"> Non-foils only</label></span></div>
     <div class="filt"><span class="fl" aria-hidden="true">Sort by:</span><div class="frows">
+    <div class="r" role="group" aria-label="Filter by card type" id="typeChips"></div>
     <div class="r" role="group" aria-label="Filter by domain" id="domChips"></div>
     <div class="r" role="group" aria-label="Filter by set" id="setChips"></div>
     </div></div>
@@ -310,7 +312,9 @@ const SPRV = {};   // sheet -> version, bumped by sync/verify_pictures.py when i
 const DOMS = [["Fury","fury"],["Calm","calm"],["Mind","mind"],["Body","body"],["Chaos","chaos"],["Order","order"]];
 const SETS = [["OGN","Origins"],["OGS","Proving Grounds"],["SFD","Spiritforged"],["UNL","Unleashed"],["VEN","Vendetta"],["RAD","Radiance"]];
 const TYPE_LABEL = { "Legend":"Legends","Champion Unit":"Champion Units","Signature Spell":"Signature Spells","Spell":"Spells","Gear":"Gear","Unit":"Units","SP Card":"SP Cards","Battlefield":"Battlefields","Rune":"Runes","Token":"Tokens" };
-const st = { q:"", dom:"all", set:"all", avail:true };
+const st = { q:"", dom:"all", set:"all", type:"all", avail:true, f:false, n:false };
+const TYPES = [["Legends",["Legend"]],["Units",["Unit","Champion Unit"]],["Battlefields",["Battlefield"]],["Spells",["Spell","Signature Spell"]],["Gear",["Gear"]]];
+const SIG_LABEL = { "Signature Spell":"Signature Spells","Champion Unit":"Signature Units","Unit":"Signature Units","Gear":"Signature Gear" };
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -318,7 +322,11 @@ const peso = n => "₱" + Number(n).toLocaleString("en-US");
 const left = x => x ? Math.max(x.s - x.res - x.sold, 0) : 0;
 const avail = r => left(r.nf) + left(r.f);
 const doms = r => r.d.split(" / ").map(s => s.trim());
-const sec = r => { const d = doms(r); return d.length > 1 ? "Dual" : (DOMS.some(x => x[0] === d[0]) ? d[0] : "Colorless"); };
+const colorless = r => !doms(r).some(d => DOMS.some(x => x[0] === d));
+// sections: one per domain, then Legends, Signatures (other two-domain cards), Colorless, Battlefields
+const sec = r => r.t === "Legend" ? "Legends" : r.t === "Battlefield" ? "Battlefields" : doms(r).length > 1 ? "Signatures" : colorless(r) ? "Colorless" : doms(r)[0];
+const hasF = r => st.avail ? left(r.f) > 0 : !!r.f;
+const hasN = r => st.avail ? left(r.nf) > 0 : !!r.nf;
 const col = d => `var(--${d.toLowerCase()})`;
 
 function stats() {
@@ -326,6 +334,9 @@ function stats() {
   $("stats").innerHTML = `<div class="stat"><b>${s.cards.toLocaleString()}</b><span>cards</span></div><div class="stat"><b>${s.copies.toLocaleString()}</b><span>copies available</span></div><div class="stat"><b>${s.reserved.toLocaleString()}</b><span>reserved</span></div>`;
 }
 function chips() {
+  const haveT = new Set(DATA.rows.map(r => r.t));
+  $("typeChips").innerHTML = `<button type="button" class="chip" data-type="all" aria-pressed="true">All cards</button>` +
+    TYPES.filter(([, ts]) => ts.some(t => haveT.has(t))).map(([n]) => `<button type="button" class="chip" data-type="${n}" aria-pressed="false">${n}</button>`).join("");
   const icon = k => `<span class="dotc" style="--c:var(--${k})"><img src="${DATA.icons[k]}" alt=""></span>`;
   $("domChips").innerHTML = `<button type="button" class="chip" data-dom="all" aria-pressed="true">All domains</button>` +
     DOMS.map(([n, k]) => `<button type="button" class="chip" data-dom="${n}" aria-pressed="false">${icon(k)}${n}</button>`).join("") +
@@ -349,7 +360,8 @@ function tileHtml(r) {
   const d0 = doms(r), main = DOMS.find(x => x[0] === d0[0]);
   const bg = d0.length > 1 ? "var(--dual)" : main ? col(main[0]) : "var(--colorless)";
   const dd = d0.map(d => `<span class="dd" style="background:${DOMS.some(x => x[0] === d) ? col(d) : "var(--colorless)"}"></span>`).join("");
-  const slots = r.single ? slot(r.f, "Foil", "foil", r.id, "f") : slot(r.nf, "Non-foil", "", r.id, "nf") + slot(r.f, "Foil", "foil", r.id, "f");
+  const showN = !r.single && !(st.f && !st.n), showF = !(st.n && !st.f) || r.single;
+  const slots = (showN ? slot(r.nf, "Non-foil", "", r.id, "nf") : "") + (showF ? slot(r.f, "Foil", "foil", r.id, "f") : "");
   const a = avail(r), held = !a && ((r.nf && r.nf.res) || (r.f && r.f.res));
   const stamp = a ? "" : held ? `<span class="stamp held">Reserved</span>` : `<span class="stamp out">Sold out</span>`;
   const icon = main ? DATA.icons[main[1]] : "";
@@ -364,25 +376,27 @@ function watchPics() { if (io) io.disconnect(); document.querySelectorAll("#list
 function render() {
   const qn = norm(st.q);
   const rows = DATA.rows.filter(r =>
-    (st.dom === "all" || (st.dom === "Colorless" ? sec(r) === "Colorless" : doms(r).includes(st.dom))) &&
+    (st.dom === "all" || (st.dom === "Colorless" ? colorless(r) : doms(r).includes(st.dom))) &&
+    (st.type === "all" || TYPES.find(t => t[0] === st.type)[1].includes(r.t)) &&
+    (!st.f || hasF(r)) && (!st.n || hasN(r)) &&
     (st.set === "all" || r.set === st.set) &&
     (!st.avail || avail(r) > 0) &&
     (!qn || norm(r.n).includes(qn)));
-  const order = [...DOMS.map(d => d[0]), "Dual", "Colorless"];
+  const order = [...DOMS.map(d => d[0]), "Legends", "Signatures", "Colorless", "Battlefields"];
   const groups = {};
   for (const r of rows) {
-    const g = st.dom !== "all" && st.dom !== "Colorless" ? st.dom : sec(r);
+    const g = sec(r);
     (groups[g] = groups[g] || []).push(r);
   }
   $("count").textContent = `Showing ${rows.length.toLocaleString()} of ${DATA.rows.length.toLocaleString()} cards`;
   if (!rows.length) { $("list").innerHTML = `<div class="dom"><div class="empty">No cards match. Try another name or clear the filters.</div></div>`; return; }
   $("list").innerHTML = order.filter(g => groups[g]).map(g => {
     const k = g.toLowerCase(), icon = DATA.icons[k];
-    const title = g === "Dual" ? "Two domains" : g;
+    const title = g, dual = g === "Legends" || g === "Signatures";
     let body = "", cur = null;
-    for (const r of groups[g]) { if (r.t !== cur) { if (cur) body += `</div>`; cur = r.t; body += `<div class="ty">${esc(TYPE_LABEL[cur] || cur)}</div><div class="grid">`; } body += tileHtml(r); }
+    for (const r of groups[g]) { if (r.t !== cur) { if (cur) body += `</div>`; cur = r.t; body += `<div class="ty">${esc((g === "Signatures" && SIG_LABEL[cur]) || TYPE_LABEL[cur] || cur)}</div><div class="grid">`; } body += tileHtml(r); }
     if (cur) body += `</div>`;
-    return `<section class="dom" style="--c:${g === "Dual" ? "var(--dual)" : g === "Colorless" ? "var(--colorless)" : col(g)}"><div class="dh">${icon ? `<img src="${icon}" alt="">` : ""}<h2>${title}</h2><span class="n">${groups[g].length}</span></div>${body}</section>`;
+    return `<section class="dom" style="--c:${dual ? "var(--dual)" : g === "Colorless" || g === "Battlefields" ? "var(--colorless)" : col(g)}"><div class="dh">${icon ? `<img src="${icon}" alt="">` : ""}<h2>${title}</h2><span class="n">${groups[g].length}</span></div>${body}</section>`;
   }).join("");
   watchPics();
 }
@@ -514,10 +528,13 @@ document.addEventListener("click", e => {
   const b = e.target.closest(".chip"); if (!b) return;
   if (b.dataset.dom) { st.dom = b.dataset.dom; document.querySelectorAll("[data-dom]").forEach(x => x.setAttribute("aria-pressed", x === b)); }
   if (b.dataset.set) { st.set = b.dataset.set; document.querySelectorAll("[data-set]").forEach(x => x.setAttribute("aria-pressed", x === b)); }
+  if (b.dataset.type) { st.type = b.dataset.type; document.querySelectorAll("[data-type]").forEach(x => x.setAttribute("aria-pressed", x === b)); }
   render();
 });
 $("q").addEventListener("input", e => { st.q = e.target.value; render(); });
 $("avail").addEventListener("change", e => { st.avail = e.target.checked; render(); });
+$("onlyF").addEventListener("change", e => { st.f = e.target.checked; render(); });
+$("onlyN").addEventListener("change", e => { st.n = e.target.checked; render(); });
 tidyCart(); cart = cart.filter(c => c.cap > 0 || c.q > 0); stats(); chips(); render(); renderCart();
 { const di = document.querySelector('.dockin'); const fit = () => document.documentElement.style.setProperty('--dockh', di.offsetHeight + 'px'); fit(); addEventListener('resize', fit); di.querySelector('img').addEventListener('load', fit); if (document.fonts) document.fonts.ready.then(fit); }
 </script>
