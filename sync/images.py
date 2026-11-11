@@ -72,12 +72,19 @@ def gallery_url(rid):
     card = _gallery.get(rid.lower())
     if not card:
         raise LookupError("not in Riftcodex or the card gallery")
-    best, area = None, 0   # the card picture = largest portrait image in the card (icons are 64x64)
+    # the card picture = largest portrait image in the card (icons are 64x64);
+    # battlefields are landscape, so fall back to the largest landscape image
+    best, area, wide, warea = None, 0, None, 0
     for d in _walk(card):
         url, dim = d.get("url"), d.get("dimensions") or {}
         w, h = dim.get("width") or 0, dim.get("height") or 0
-        if isinstance(url, str) and url.startswith("http") and h > w >= 300 and w * h > area:
+        if not (isinstance(url, str) and url.startswith("http")):
+            continue
+        if h > w >= 300 and w * h > area:
             best, area = url, w * h
+        elif w >= h >= 300 and w * h > warea:
+            wide, warea = url, w * h
+    best = best or wide
     if not best:
         raise LookupError("card gallery has no picture for it")
     return best
