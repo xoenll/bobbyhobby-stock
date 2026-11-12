@@ -319,7 +319,7 @@ const DOMS = [["Fury","fury"],["Calm","calm"],["Mind","mind"],["Body","body"],["
 const SETS = [["OGN","Origins"],["OGS","Proving Grounds"],["SFD","Spiritforged"],["UNL","Unleashed"],["VEN","Vendetta"],["RAD","Radiance"]];
 const TYPE_LABEL = { "Legend":"Legends","Champion Unit":"Champion Units","Signature Spell":"Signature Spells","Spell":"Spells","Gear":"Gear","Unit":"Units","SP Card":"SP Cards","Battlefield":"Battlefields","Rune":"Runes","Token":"Tokens" };
 const st = { q:"", dom:"all", set:"all", type:"all", avail:true, pr:"" };   // pr: "" (every card) | "f" | "n" | "both" (cards with both printings)
-const TYPES = [["Legends",["Legend"]],["Units",["Unit","Champion Unit"]],["Battlefields",["Battlefield"]],["Spells",["Spell","Signature Spell"]],["Gear",["Gear"]]];
+const TYPES = [["Legends",["Legend"]],["Units",["Unit","Champion Unit"]],["Battlefields",["Battlefield"]],["Spells",["Spell","Signature Spell"]],["Gear",["Gear"]],["Alt Art Runes",["Rune"],r => /Alt Art/.test(r.n)]];
 const SIG_LABEL = { "Signature Spell":"Signature Spells","Champion Unit":"Signature Units","Unit":"Signature Units","Gear":"Signature Gear" };
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -383,7 +383,7 @@ function render() {
   const qn = norm(st.q);
   const rows = DATA.rows.filter(r =>
     (st.dom === "all" || (st.dom === "Colorless" ? colorless(r) : doms(r).includes(st.dom))) &&
-    (st.type === "all" || TYPES.find(t => t[0] === st.type)[1].includes(r.t)) &&
+    (st.type === "all" || (tt => tt[1].includes(r.t) && (!tt[2] || tt[2](r)))(TYPES.find(t => t[0] === st.type))) &&
     (st.pr === "f" ? hasF(r) : st.pr === "n" ? hasN(r) : st.pr === "both" ? hasF(r) && hasN(r) : true) &&
     (st.set === "all" || r.set === st.set) &&
     (!st.avail || avail(r) > 0) &&
