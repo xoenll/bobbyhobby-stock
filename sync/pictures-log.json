@@ -1,78 +1,5 @@
 {
- "added": [
-  {
-   "id": "rad-r04a",
-   "rid": "rad-r04a",
-   "cell": [
-    29,
-    3
-   ]
-  },
-  {
-   "id": "ogn-042a",
-   "rid": "ogn-042a-298",
-   "cell": [
-    29,
-    4
-   ]
-  },
-  {
-   "id": "rad-r05a",
-   "rid": "rad-r05a",
-   "cell": [
-    29,
-    5
-   ]
-  },
-  {
-   "id": "ogn-007a",
-   "rid": "ogn-007a-298",
-   "cell": [
-    29,
-    6
-   ]
-  },
-  {
-   "id": "rad-r01a",
-   "rid": "rad-r01a",
-   "cell": [
-    29,
-    7
-   ]
-  },
-  {
-   "id": "ogn-089a",
-   "rid": "ogn-089a-298",
-   "cell": [
-    29,
-    8
-   ]
-  },
-  {
-   "id": "rad-r03a",
-   "rid": "rad-r03a",
-   "cell": [
-    29,
-    9
-   ]
-  },
-  {
-   "id": "ogn-214a",
-   "rid": "ogn-214a-298",
-   "cell": [
-    29,
-    10
-   ]
-  },
-  {
-   "id": "rad-r06a",
-   "rid": "rad-r06a",
-   "cell": [
-    29,
-    11
-   ]
-  }
- ],
+ "added": [],
  "failed": [
   {
    "id": "ven-r04a",
@@ -85,7 +12,5 @@
    "reason": "LookupError: not in Riftcodex or the card gallery"
   }
  ],
- "sheets": [
-  "sprites/s29.webp"
- ]
+ "sheets": []
 }
