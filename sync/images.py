@@ -38,7 +38,8 @@ def get(url, accept_json):
 def riftcodex_url(rid):
     data = json.loads(get(API + rid, True))
     items = data if isinstance(data, list) else data.get("items") or data.get("data") or ([data] if "riftbound_id" in data else [])
-    exact = [c for c in items if (c.get("riftbound_id") or "").lower() == rid.lower()]
+    exact = [c for c in items if (c.get("riftbound_id") or "").lower() == rid.lower()] or \
+            [c for c in items if (c.get("riftbound_id") or "").lower().startswith(rid.lower() + "-")]   # e.g. "unl-r03a-219"
     if not exact:
         raise LookupError("not in Riftcodex")
     url = (exact[0].get("media") or {}).get("image_url")
@@ -69,7 +70,7 @@ def gallery_url(rid):
         for d in _walk(json.loads(m.group(1))):
             if isinstance(d.get("id"), str) and "publicCode" in d and d["id"] not in _gallery:
                 _gallery[d["id"].lower()] = d
-    card = _gallery.get(rid.lower())
+    card = _gallery.get(rid.lower()) or next((v for k, v in _gallery.items() if k.startswith(rid.lower() + "-")), None)
     if not card:
         raise LookupError("not in Riftcodex or the card gallery")
     # the card picture = largest portrait image in the card (icons are 64x64);
