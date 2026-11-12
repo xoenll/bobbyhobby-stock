@@ -1,573 +1,91 @@
 {
  "added": [
   {
-   "id": "unl-205",
-   "rid": "unl-205-219",
+   "id": "rad-r04a",
+   "rid": "rad-r04a",
    "cell": [
-    26,
-    1
-   ]
-  },
-  {
-   "id": "unl-206",
-   "rid": "unl-206-219",
-   "cell": [
-    26,
-    2
-   ]
-  },
-  {
-   "id": "ogn-275",
-   "rid": "ogn-275-298",
-   "cell": [
-    26,
+    29,
     3
    ]
   },
   {
-   "id": "unl-207",
-   "rid": "unl-207-219",
+   "id": "ogn-042a",
+   "rid": "ogn-042a-298",
    "cell": [
-    26,
+    29,
     4
    ]
   },
   {
-   "id": "ogn-276",
-   "rid": "ogn-276-298",
+   "id": "rad-r05a",
+   "rid": "rad-r05a",
    "cell": [
-    26,
+    29,
     5
    ]
   },
   {
-   "id": "ogn-277",
-   "rid": "ogn-277-298",
+   "id": "ogn-007a",
+   "rid": "ogn-007a-298",
    "cell": [
-    26,
+    29,
     6
    ]
   },
   {
-   "id": "ogn-278",
-   "rid": "ogn-278-298",
+   "id": "rad-r01a",
+   "rid": "rad-r01a",
    "cell": [
-    26,
+    29,
     7
    ]
   },
   {
-   "id": "unl-208",
-   "rid": "unl-208-219",
+   "id": "ogn-089a",
+   "rid": "ogn-089a-298",
    "cell": [
-    26,
+    29,
     8
    ]
   },
   {
-   "id": "ven-157",
-   "rid": "ven-157-166",
+   "id": "rad-r03a",
+   "rid": "rad-r03a",
    "cell": [
-    26,
+    29,
     9
    ]
   },
   {
-   "id": "unl-209",
-   "rid": "unl-209-219",
+   "id": "ogn-214a",
+   "rid": "ogn-214a-298",
    "cell": [
-    26,
+    29,
     10
    ]
   },
   {
-   "id": "sfd-207",
-   "rid": "sfd-207-221",
+   "id": "rad-r06a",
+   "rid": "rad-r06a",
    "cell": [
-    26,
+    29,
     11
-   ]
-  },
-  {
-   "id": "unl-210",
-   "rid": "unl-210-219",
-   "cell": [
-    26,
-    12
-   ]
-  },
-  {
-   "id": "sfd-208",
-   "rid": "sfd-208-221",
-   "cell": [
-    26,
-    13
-   ]
-  },
-  {
-   "id": "unl-211",
-   "rid": "unl-211-219",
-   "cell": [
-    26,
-    14
-   ]
-  },
-  {
-   "id": "sfd-209",
-   "rid": "sfd-209-221",
-   "cell": [
-    26,
-    15
-   ]
-  },
-  {
-   "id": "ogn-279",
-   "rid": "ogn-279-298",
-   "cell": [
-    26,
-    16
-   ]
-  },
-  {
-   "id": "unl-212",
-   "rid": "unl-212-219",
-   "cell": [
-    26,
-    17
-   ]
-  },
-  {
-   "id": "unl-213",
-   "rid": "unl-213-219",
-   "cell": [
-    26,
-    18
-   ]
-  },
-  {
-   "id": "ogn-280",
-   "rid": "ogn-280-298",
-   "cell": [
-    26,
-    19
-   ]
-  },
-  {
-   "id": "sfd-210",
-   "rid": "sfd-210-221",
-   "cell": [
-    26,
-    20
-   ]
-  },
-  {
-   "id": "ogn-281",
-   "rid": "ogn-281-298",
-   "cell": [
-    26,
-    21
-   ]
-  },
-  {
-   "id": "ven-158",
-   "rid": "ven-158-166",
-   "cell": [
-    26,
-    22
-   ]
-  },
-  {
-   "id": "ven-159",
-   "rid": "ven-159-166",
-   "cell": [
-    26,
-    23
-   ]
-  },
-  {
-   "id": "sfd-211",
-   "rid": "sfd-211-221",
-   "cell": [
-    27,
-    0
-   ]
-  },
-  {
-   "id": "sfd-212",
-   "rid": "sfd-212-221",
-   "cell": [
-    27,
-    1
-   ]
-  },
-  {
-   "id": "ogn-282",
-   "rid": "ogn-282-298",
-   "cell": [
-    27,
-    2
-   ]
-  },
-  {
-   "id": "ven-160",
-   "rid": "ven-160-166",
-   "cell": [
-    27,
-    3
-   ]
-  },
-  {
-   "id": "ogn-283",
-   "rid": "ogn-283-298",
-   "cell": [
-    27,
-    4
-   ]
-  },
-  {
-   "id": "ogn-284",
-   "rid": "ogn-284-298",
-   "cell": [
-    27,
-    5
-   ]
-  },
-  {
-   "id": "sfd-213",
-   "rid": "sfd-213-221",
-   "cell": [
-    27,
-    6
-   ]
-  },
-  {
-   "id": "ven-161",
-   "rid": "ven-161-166",
-   "cell": [
-    27,
-    7
-   ]
-  },
-  {
-   "id": "sfd-214",
-   "rid": "sfd-214-221",
-   "cell": [
-    27,
-    8
-   ]
-  },
-  {
-   "id": "ven-162",
-   "rid": "ven-162-166",
-   "cell": [
-    27,
-    9
-   ]
-  },
-  {
-   "id": "sfd-215",
-   "rid": "sfd-215-221",
-   "cell": [
-    27,
-    10
-   ]
-  },
-  {
-   "id": "ogn-285",
-   "rid": "ogn-285-298",
-   "cell": [
-    27,
-    11
-   ]
-  },
-  {
-   "id": "ogn-286",
-   "rid": "ogn-286-298",
-   "cell": [
-    27,
-    12
-   ]
-  },
-  {
-   "id": "unl-214",
-   "rid": "unl-214-219",
-   "cell": [
-    27,
-    13
-   ]
-  },
-  {
-   "id": "ven-163",
-   "rid": "ven-163-166",
-   "cell": [
-    27,
-    14
-   ]
-  },
-  {
-   "id": "sfd-216",
-   "rid": "sfd-216-221",
-   "cell": [
-    27,
-    15
-   ]
-  },
-  {
-   "id": "ven-164",
-   "rid": "ven-164-166",
-   "cell": [
-    27,
-    16
-   ]
-  },
-  {
-   "id": "sfd-217",
-   "rid": "sfd-217-221",
-   "cell": [
-    27,
-    17
-   ]
-  },
-  {
-   "id": "ven-165",
-   "rid": "ven-165-166",
-   "cell": [
-    27,
-    18
-   ]
-  },
-  {
-   "id": "ogn-287",
-   "rid": "ogn-287-298",
-   "cell": [
-    27,
-    19
-   ]
-  },
-  {
-   "id": "unl-215",
-   "rid": "unl-215-219",
-   "cell": [
-    27,
-    20
-   ]
-  },
-  {
-   "id": "ogn-288",
-   "rid": "ogn-288-298",
-   "cell": [
-    27,
-    21
-   ]
-  },
-  {
-   "id": "sfd-218",
-   "rid": "sfd-218-221",
-   "cell": [
-    27,
-    22
-   ]
-  },
-  {
-   "id": "ogn-289",
-   "rid": "ogn-289-298",
-   "cell": [
-    27,
-    23
-   ]
-  },
-  {
-   "id": "unl-216",
-   "rid": "unl-216-219",
-   "cell": [
-    28,
-    0
-   ]
-  },
-  {
-   "id": "ogn-290",
-   "rid": "ogn-290-298",
-   "cell": [
-    28,
-    1
-   ]
-  },
-  {
-   "id": "ogn-291",
-   "rid": "ogn-291-298",
-   "cell": [
-    28,
-    2
-   ]
-  },
-  {
-   "id": "ogn-292",
-   "rid": "ogn-292-298",
-   "cell": [
-    28,
-    3
-   ]
-  },
-  {
-   "id": "ogn-293",
-   "rid": "ogn-293-298",
-   "cell": [
-    28,
-    4
-   ]
-  },
-  {
-   "id": "sfd-219",
-   "rid": "sfd-219-221",
-   "cell": [
-    28,
-    5
-   ]
-  },
-  {
-   "id": "ven-166",
-   "rid": "ven-166-166",
-   "cell": [
-    28,
-    6
-   ]
-  },
-  {
-   "id": "unl-217",
-   "rid": "unl-217-219",
-   "cell": [
-    28,
-    7
-   ]
-  },
-  {
-   "id": "sfd-220",
-   "rid": "sfd-220-221",
-   "cell": [
-    28,
-    8
-   ]
-  },
-  {
-   "id": "ogn-294",
-   "rid": "ogn-294-298",
-   "cell": [
-    28,
-    9
-   ]
-  },
-  {
-   "id": "unl-218",
-   "rid": "unl-218-219",
-   "cell": [
-    28,
-    10
-   ]
-  },
-  {
-   "id": "unl-219",
-   "rid": "unl-219-219",
-   "cell": [
-    28,
-    11
-   ]
-  },
-  {
-   "id": "sfd-221",
-   "rid": "sfd-221-221",
-   "cell": [
-    28,
-    12
-   ]
-  },
-  {
-   "id": "ogn-295",
-   "rid": "ogn-295-298",
-   "cell": [
-    28,
-    13
-   ]
-  },
-  {
-   "id": "ogn-296",
-   "rid": "ogn-296-298",
-   "cell": [
-    28,
-    14
-   ]
-  },
-  {
-   "id": "ogn-297",
-   "rid": "ogn-297-298",
-   "cell": [
-    28,
-    15
-   ]
-  },
-  {
-   "id": "ogn-298",
-   "rid": "ogn-298-298",
-   "cell": [
-    28,
-    16
    ]
   }
  ],
  "failed": [
   {
-   "id": "rad-157",
-   "rid": "rad-157-167",
-   "reason": "LookupError: card gallery has no picture for it"
+   "id": "ven-r04a",
+   "rid": "ven-r04a",
+   "reason": "LookupError: not in Riftcodex or the card gallery"
   },
   {
-   "id": "rad-158",
-   "rid": "rad-158-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-159",
-   "rid": "rad-159-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-160",
-   "rid": "rad-160-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-161",
-   "rid": "rad-161-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-162",
-   "rid": "rad-162-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-163",
-   "rid": "rad-163-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-164",
-   "rid": "rad-164-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-165",
-   "rid": "rad-165-167",
-   "reason": "LookupError: card gallery has no picture for it"
-  },
-  {
-   "id": "rad-166",
-   "rid": "rad-166-167",
-   "reason": "LookupError: card gallery has no picture for it"
+   "id": "unl-r03a",
+   "rid": "unl-r03a",
+   "reason": "LookupError: not in Riftcodex or the card gallery"
   }
  ],
  "sheets": [
-  "sprites/s26.webp",
-  "sprites/s27.webp",
-  "sprites/s28.webp"
+  "sprites/s29.webp"
  ]
 }
