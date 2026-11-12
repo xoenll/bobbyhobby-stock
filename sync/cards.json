@@ -25960,6 +25960,28 @@
 "signature_card": false
 },
 {
+"key": "5e2b8f61c0d4",
+"rid": "unl-r03a",
+"set": "UNL",
+"code": "r03a",
+"sortnum": 3,
+"name": "Mind Rune",
+"tag": "Alternate Art",
+"type": "Rune",
+"supertype": "Basic",
+"cat": "runes",
+"sub": null,
+"dkey": [
+0,
+2,
+0
+],
+"domain": "Mind",
+"rarity": "S",
+"rarity_full": "Showcase",
+"signature_card": false
+},
+{
 "key": "eb8963b60768",
 "rid": "ven-001-166",
 "set": "VEN",
@@ -26221,6 +26243,28 @@
 "domain": "Body",
 "rarity": "C",
 "rarity_full": "Common",
+"signature_card": false
+},
+{
+"key": "a7c3e9104b5d",
+"rid": "ven-r04a",
+"set": "VEN",
+"code": "r04a",
+"sortnum": 4,
+"name": "Body Rune",
+"tag": "Alternate Art",
+"type": "Rune",
+"supertype": "Basic",
+"cat": "runes",
+"sub": null,
+"dkey": [
+0,
+3,
+0
+],
+"domain": "Body",
+"rarity": "S",
+"rarity_full": "Showcase",
 "signature_card": false
 },
 {
